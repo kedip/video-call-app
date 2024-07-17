@@ -1,17 +1,17 @@
 const { Server } = require("socket.io");
 const mongoose = require("mongoose");
 const CallLog = require("./CallLogs.js");
+const express = require("express");
 
 const URI =
   "mongodb+srv://nishantvekariya41:FcOXWvzGSXt0VL5M@cluster0.rgf49lz.mongodb.net/";
 
 mongoose
-  .connect(URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+  .connect(URI)
   .then(() => console.log("MongoDB connected"))
   .catch((err) => console.error("MongoDB connection error:", err));
+
+  const app = express();
 
 const io = new Server(8000, {
   cors: true,
@@ -72,3 +72,8 @@ io.on("connection", (socket) => {
     io.to(to).emit("peer:nego:final", { from: socket.id, ans });
   });
 });
+
+
+app.listen(3000, () => {
+  console.log('Server is running...');
+})
