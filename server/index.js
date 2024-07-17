@@ -14,7 +14,10 @@ mongoose
 const app = express();
 
 const io = new Server(process.env.SOCKET_IO_PORT, {
-  cors: true,
+  cors:  {
+    origin: "*", 
+    methods: ["GET", "POST"],
+  },
 });
 
 let activeCalls = new Map();
