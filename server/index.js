@@ -1,24 +1,23 @@
+require('dotenv').config();
 const { Server } = require("socket.io");
 const mongoose = require("mongoose");
 const CallLog = require("./CallLogs.js");
 const express = require("express");
 
-const URI =
-  "mongodb+srv://nishantvekariya41:FcOXWvzGSXt0VL5M@cluster0.rgf49lz.mongodb.net/";
+const URI = process.env.MONGO_URI;
 
 mongoose
   .connect(URI)
   .then(() => console.log("MongoDB connected"))
   .catch((err) => console.error("MongoDB connection error:", err));
 
-  const app = express();
+const app = express();
 
-const io = new Server(8000, {
+const io = new Server(process.env.SOCKET_IO_PORT, {
   cors: true,
 });
 
 let activeCalls = new Map();
-
 const socketidToRoomMap = new Map();
 
 io.on("connection", (socket) => {
@@ -73,7 +72,6 @@ io.on("connection", (socket) => {
   });
 });
 
-
-app.listen(3000, () => {
+app.listen(process.env.EXPRESS_PORT, () => {
   console.log('Server is running...');
-})
+});
