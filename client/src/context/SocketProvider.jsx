@@ -10,7 +10,7 @@ export const useSocket = () => {
 
 export const SocketProvider = (props) => {
   const socket = useMemo(() => {
-    const newSocket = io("ws://video-call-app-ccri.onrender.com:8000", {
+    const newSocket = io("video-call-app-ccri.onrender.com:8000", {
       withCredentials: true,
       transports: ['websocket', 'polling'],
     });
