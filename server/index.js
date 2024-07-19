@@ -17,7 +17,7 @@ const io = new Server(process.env.SOCKET_IO_PORT, {
   cors:  {
     origin: ["*", "http://localhost:3000"], 
     methods: ["GET", "POST"],
-    credentials:true
+    credentials: true
   },
 });
 
@@ -25,7 +25,15 @@ let activeCalls = new Map();
 const socketidToRoomMap = new Map();
 
 io.on("connection", (socket) => {
-  console.log(`Socket Connected`, socket.id);
+  console.log(`Socket Connected: ${socket.id}`);
+
+  socket.on("disconnect", (reason) => {
+    console.log(`Socket Disconnected: ${socket.id}, Reason: ${reason}`);
+  });
+
+  socket.on("error", (error) => {
+    console.error(`Socket Error: ${error}`);
+  });
 
   socket.on("room:join", (room) => {
     const existingRoom = socketidToRoomMap.get(socket.id);

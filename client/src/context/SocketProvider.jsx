@@ -9,10 +9,26 @@ export const useSocket = () => {
 };
 
 export const SocketProvider = (props) => {
-  const socket = useMemo(() => io("http://video-call-app-ccri.onrender.com:8000", {
-    withCredentials: true,
-    transports: ['websocket', 'polling'],
-  }), []);
+  const socket = useMemo(() => {
+    const newSocket = io("ws://video-call-app-ccri.onrender.com:8000", {
+      withCredentials: true,
+      transports: ['websocket', 'polling'],
+    });
+
+    newSocket.on("connect", () => {
+      console.log("WebSocket connected");
+    });
+
+    newSocket.on("disconnect", (reason) => {
+      console.log(`WebSocket disconnected: ${reason}`);
+    });
+
+    newSocket.on("connect_error", (error) => {
+      console.error(`WebSocket connection error: ${error}`);
+    });
+
+    return newSocket;
+  }, []);
 
   return (
     <SocketContext.Provider value={socket}>
