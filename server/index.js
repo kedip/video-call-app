@@ -15,8 +15,9 @@ const app = express();
 
 const io = new Server(process.env.SOCKET_IO_PORT, {
   cors:  {
-    origin: "*", 
+    origin: ["*", "http://localhost:3000"], 
     methods: ["GET", "POST"],
+    credentials:true
   },
 });
 

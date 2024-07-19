@@ -8,8 +8,8 @@ const RoomPage = () => {
   const socket = useSocket();
   const navigate = useNavigate();
   const [remoteSocketId, setRemoteSocketId] = useState(null);
-  const [myStream, setMyStream] = useState();
-  const [remoteStream, setRemoteStream] = useState();
+  const [myStream, setMyStream] = useState(null);
+  const [remoteStream, setRemoteStream] = useState(null);
 
   const handleUserJoined = useCallback(({ email, id }) => {
     console.log(`Email ${email} joined room`);
@@ -35,7 +35,7 @@ const RoomPage = () => {
     setRemoteStream(null);
     setRemoteSocketId(null);
     navigate("/");
-  }, [socket, myStream]);
+  }, [socket, myStream, navigate]);
 
   const handleIncommingCall = useCallback(
     async ({ from, offer }) => {
@@ -140,7 +140,7 @@ const RoomPage = () => {
             muted
             height="100px"
             width="200px"
-            url={myStream}
+            url={URL.createObjectURL(myStream)}
           />
         </>
       )}
@@ -152,7 +152,7 @@ const RoomPage = () => {
             muted
             height="100px"
             width="200px"
-            url={remoteStream}
+            url={URL.createObjectURL(remoteStream)}
           />
         </>
       )}
@@ -161,7 +161,3 @@ const RoomPage = () => {
 };
 
 export default RoomPage;
-
-// {
-//   myStream && <button onClick={sendStreams}>Send Stream</button>;
-// }
